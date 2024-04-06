@@ -82,13 +82,13 @@ int main(int argc, char *argv[]) {
 
     if (floyd_warshall_flag) {
         if (omp_flag) {
-            solver = new FloydWarshallPar();
+            solver = new FloydWarshallPar(num_thread);
         } else {
             solver = new FloydWarshallSeq();
         }
     } else {
         if (omp_flag) {
-            solver = new FloydWarshallPar();
+            solver = new FloydWarshallPar(num_thread);
         } else {
             solver = new FloydWarshallSeq();
         }
