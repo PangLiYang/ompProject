@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <unistd.h>
 #include "/opt/homebrew/opt/libomp/include/omp.h"
 
@@ -7,6 +8,7 @@
 #include "GeneralUtils.h"
 #include "Solver.h"
 #include "FloydWarshallSeq.h"
+#include "FloydWarshallPar.h"
 
 using namespace std;
 
@@ -41,7 +43,7 @@ int main(int argc, char *argv[]) {
 
                 if (optarg != nullptr) {
                     num_thread = stoi(optarg);
-//                    omp_set_num_threads(num_thread);
+                    omp_set_num_threads(num_thread);
                 } else {
                     cout << "Assign the number of threads!" << endl;
                     return 42;
@@ -76,18 +78,20 @@ int main(int argc, char *argv[]) {
         }
     }
 
-//    cout << floyd_warshall_flag << endl;
-//    cout << omp_flag << endl;
-//    cout << num_thread << endl;
-//    cout << num_separate_points << endl;
-//    cout << graph_size << endl;
-
     graph_matrix = init_graph_matrix(graph_size, connect_rate, seed);
 
     if (floyd_warshall_flag) {
-        solver = new FloydWarshallSeq();
+        if (omp_flag) {
+            solver = new FloydWarshallPar();
+        } else {
+            solver = new FloydWarshallSeq();
+        }
     } else {
-        solver = new FloydWarshallSeq();
+        if (omp_flag) {
+            solver = new FloydWarshallPar();
+        } else {
+            solver = new FloydWarshallSeq();
+        }
     }
 
     auto tic = chrono::high_resolution_clock::now();
