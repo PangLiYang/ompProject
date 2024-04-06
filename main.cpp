@@ -12,6 +12,8 @@
 
 using namespace std;
 
+void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix);
+
 int main(int argc, char *argv[]) {
 
     bool omp_flag = false;
@@ -43,7 +45,7 @@ int main(int argc, char *argv[]) {
 
                 if (optarg != nullptr) {
                     num_thread = stoi(optarg);
-                    omp_set_num_threads(num_thread);
+//                    omp_set_num_threads(num_thread);
                 } else {
                     cout << "Assign the number of threads!" << endl;
                     return 42;
@@ -102,4 +104,24 @@ int main(int argc, char *argv[]) {
 
     chrono::duration<double, milli> exec_time = toc - tic;
     cout << "Program execution time: " << exec_time.count() << "ms" << endl;
+
+    testCorrectness(output, graph_matrix);
+}
+
+void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix) {
+    Solver* solver = solver = new FloydWarshallSeq();
+    int n = graph_matrix->size();
+
+    auto fit = solver->forward(graph_matrix, n);
+
+    for (int i = 0; i < n; i += 1) {
+        for (int j = 0; j < n; j += 1) {
+            if (fit->at(i).at(j) != output->at(i).at(j)) {
+                cout << "Not Correct!" << endl;
+                return;
+            }
+        }
+    }
+
+    cout << "Correct!" << endl;
 }
