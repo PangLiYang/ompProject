@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <unistd.h>
-#include "/opt/homebrew/opt/libomp/include/omp.h"
+#include <omp.h>
 
 #include <vector>
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
                 if (optarg != nullptr) {
                     num_thread = stoi(optarg);
-//                    omp_set_num_threads(num_thread);
+                    omp_set_num_threads(num_thread);
                 } else {
                     cout << "Assign the number of threads!" << endl;
                     return 42;
@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
 }
 
 void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix) {
-    Solver* solver = solver = new FloydWarshallSeq();
+    Solver* solver = new FloydWarshallSeq();
     int n = graph_matrix->size();
 
     auto fit = solver->forward(graph_matrix, n);

@@ -16,30 +16,25 @@ vector< vector<int> >* FloydWarshallPar::forward(vector< vector<int> >* graph, i
 
     #pragma omp parallel
     {
-        #pragma omp for
+        #pragma omp for collapse(2)
         for (int i = 0; i < n; i += 1) {
             for (int j = 0; j < n; j += 1) {
                 local_graph->at(i).at(j) = graph->at(i).at(j);
             }
         }
 
-        // apply Floyd-Warshall algorithm
-        #pragma omp for
         for (int k = 0; k < n; k += 1) {
+            #pragma omp for collapse(2)
             for (int i = 0; i < n; i += 1) {
                 for (int j = 0; j < n; j += 1) {
-                    #pragma omp critical
-                    {
-                        if (local_graph->at(i).at(j) > local_graph->at(i).at(k) + local_graph->at(k).at(j)) {
-                            local_graph->at(i).at(j) = local_graph->at(i).at(k) + local_graph->at(k).at(j);
-                        }
+                    if (local_graph->at(i).at(j) > local_graph->at(i).at(k) + local_graph->at(k).at(j)) {
+                        local_graph->at(i).at(j) = local_graph->at(i).at(k) + local_graph->at(k).at(j);
                     }
                 }
             }
         }
 
-        // apply to target result to output
-        #pragma omp for
+        #pragma omp for collapse(2)
         for (int i = 0; i < graph_size; i += 1) {
             for (int j = n - graph_size; j < n; j += 1) {
                 output->at(i).at(j) = local_graph->at(i).at(j);

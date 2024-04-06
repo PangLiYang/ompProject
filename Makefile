@@ -1,5 +1,5 @@
 CC=g++
-#CFLAGS=-Wall -std=gnu++17 -fopenmp
+CFLAGS=-Wall -std=gnu++17 -fopenmp
 TARGET=prog
 SRCS=$(wildcard *.cpp)
 OBJS=$(SRCS:.cpp=.o)
