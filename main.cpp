@@ -15,6 +15,8 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     bool omp_flag = false;
+    bool test_flag = false;
+    bool print_flag = false;
     int num_thread = 1;
     int num_layers = 0;
     int graph_size = 0;
@@ -29,12 +31,22 @@ int main(int argc, char *argv[]) {
 
     int c;
 
-    while ((c = getopt(argc, argv, "fm:l:g:")) != -1) {
+    while ((c = getopt(argc, argv, "ftpm:l:g:")) != -1) {
 
         switch (c) {
 
             case 'f':
                 floyd_warshall_flag = true;
+
+                break;
+
+            case 't':
+                test_flag = true;
+
+                break;
+
+            case 'p':
+                print_flag = true;
 
                 break;
 
@@ -107,5 +119,11 @@ int main(int argc, char *argv[]) {
     chrono::duration<double, milli> exec_time = toc - tic;
     cout << "Program execution time: " << exec_time.count() << "ms" << endl;
 
-    testCorrectness(output, graph_matrix, graph_size, num_layers);
+    if (test_flag) {
+        testCorrectness(output, graph_matrix, graph_size, num_layers);
+    }
+
+    if (print_flag) {
+        print_matrix(output);
+    }
 }

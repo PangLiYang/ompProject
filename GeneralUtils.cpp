@@ -57,12 +57,12 @@ vector<vector<int> >* add_graph_layers(vector<vector<int> > *graph, int num_laye
 void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix,
                      int graph_size, int num_layers) {
     Solver* solver = new FloydWarshallSeq(graph_size, num_layers);
-    int n = graph_matrix->size();
 
     auto fit = solver->forward(graph_matrix);
+    int n = fit->size();
 
-    for (int i = 0; i < fit->size(); i += 1) {
-        for (int j = 0; j < fit->size(); j += 1) {
+    for (int i = 0; i < n; i += 1) {
+        for (int j = 0; j < n; j += 1) {
             if (fit->at(i).at(j) != output->at(i).at(j)) {
                 cout << "Not Correct!" << endl;
                 return;
@@ -73,4 +73,20 @@ void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph
     delete(solver);
 
     cout << "Correct!" << endl;
+}
+
+void print_matrix(vector< vector<int> >* graph) {
+    int n = graph->size();
+
+    for (int i = 0; i < n; i += 1) {
+        for (int j = 0; j < n; j += 1) {
+            cout << graph->at(i).at(j);
+
+            if (j != n - 1) {
+                cout << ", ";
+            } else {
+                cout << endl;
+            }
+        }
+    }
 }

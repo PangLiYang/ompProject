@@ -18,5 +18,6 @@ vector< vector<int> >* add_graph_layers(vector< vector<int> >* graph, int num_la
 void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix,
                      int graph_size, int num_layers);
 
+void print_matrix(vector< vector<int> >* graph);
 
 #endif //OMPTESTCPP_GENERALUTILS_H
