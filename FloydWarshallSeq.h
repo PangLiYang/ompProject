@@ -8,6 +8,8 @@ public:
     FloydWarshallSeq(int graph_size, int num_layers);
 
     vector< vector<int> >* forward(vector< vector<int> >* graph);
+    vector< vector<int> >* forward_optimized(vector< vector<int> >* graph);
+
 private:
     int graph_size;
     int num_layers;

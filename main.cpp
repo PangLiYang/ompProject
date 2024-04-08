@@ -12,13 +12,11 @@
 
 using namespace std;
 
-void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix, int graph_size, int num_layers);
-
 int main(int argc, char *argv[]) {
 
     bool omp_flag = false;
     int num_thread = 1;
-    int num_layers = 1;
+    int num_layers = 0;
     int graph_size = 0;
     bool floyd_warshall_flag = false;
 
@@ -31,7 +29,7 @@ int main(int argc, char *argv[]) {
 
     int c;
 
-    while ((c = getopt(argc, argv, "fm:s:g:")) != -1) {
+    while ((c = getopt(argc, argv, "fm:l:g:")) != -1) {
 
         switch (c) {
 
@@ -53,7 +51,7 @@ int main(int argc, char *argv[]) {
 
                 break;
 
-            case 's':
+            case 'l':
 
                 if (optarg != nullptr) {
                     num_layers = stoi(optarg);
@@ -82,6 +80,10 @@ int main(int argc, char *argv[]) {
 
     graph_matrix = init_graph_matrix(graph_size, connect_rate, seed);
 
+    if (num_layers != 0) {
+        graph_matrix = add_graph_layers(graph_matrix, num_layers);
+    }
+
     if (floyd_warshall_flag) {
         if (omp_flag) {
             solver = new FloydWarshallPar(num_thread, graph_size, num_layers);
@@ -106,22 +108,4 @@ int main(int argc, char *argv[]) {
     cout << "Program execution time: " << exec_time.count() << "ms" << endl;
 
     testCorrectness(output, graph_matrix, graph_size, num_layers);
-}
-
-void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix, int graph_size, int num_layers) {
-    Solver* solver = new FloydWarshallSeq(graph_size, num_layers);
-    int n = graph_matrix->size();
-
-    auto fit = solver->forward(graph_matrix);
-
-    for (int i = 0; i < n; i += 1) {
-        for (int j = 0; j < n; j += 1) {
-            if (fit->at(i).at(j) != output->at(i).at(j)) {
-                cout << "Not Correct!" << endl;
-                return;
-            }
-        }
-    }
-
-    cout << "Correct!" << endl;
 }

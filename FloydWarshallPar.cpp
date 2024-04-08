@@ -37,8 +37,8 @@ vector< vector<int> >* FloydWarshallPar::forward(vector< vector<int> >* graph) {
 
         #pragma omp for collapse(2)
         for (int i = 0; i < graph_size; i += 1) {
-            for (int j = n - graph_size; j < n; j += 1) {
-                output->at(i).at(j) = local_graph->at(i).at(j);
+            for (int j = 0; j < graph_size; j += 1) {
+                output->at(i).at(j) = local_graph->at(i).at(n - graph_size + j);
             }
         }
     }
@@ -46,3 +46,10 @@ vector< vector<int> >* FloydWarshallPar::forward(vector< vector<int> >* graph) {
     return output;
 }
 
+vector< vector<int> >*  FloydWarshallPar::forward_optimized(vector< vector<int> >* graph) {
+    int n = graph->size();
+    auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
+    auto* local_graph = new vector< vector<int> >(n, vector<int>(n));
+
+    return output;
+}
