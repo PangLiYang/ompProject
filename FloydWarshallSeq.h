@@ -5,9 +5,12 @@
 
 class FloydWarshallSeq : public Solver{
 public:
-    FloydWarshallSeq();
+    FloydWarshallSeq(int graph_size, int num_layers);
 
-    vector< vector<int> >* forward(vector< vector<int> >* graph, int graph_size);
+    vector< vector<int> >* forward(vector< vector<int> >* graph);
+private:
+    int graph_size;
+    int num_layers;
 };
 
 

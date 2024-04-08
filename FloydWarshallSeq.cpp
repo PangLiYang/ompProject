@@ -1,10 +1,11 @@
 #include "FloydWarshallSeq.h"
 
-FloydWarshallSeq::FloydWarshallSeq() {
-
+FloydWarshallSeq::FloydWarshallSeq(int graph_size, int num_layers) {
+    this->graph_size = graph_size;
+    this->num_layers = num_layers;
 }
 
-vector< vector<int> >* FloydWarshallSeq::forward(vector< vector<int> >* graph, int graph_size) {
+vector< vector<int> >* FloydWarshallSeq::forward(vector< vector<int> >* graph) {
 
     // init output matrix and working graph local copy
     int n = graph->size();

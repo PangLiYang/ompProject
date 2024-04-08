@@ -12,13 +12,13 @@
 
 using namespace std;
 
-void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix);
+void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix, int graph_size, int num_layers);
 
 int main(int argc, char *argv[]) {
 
     bool omp_flag = false;
     int num_thread = 1;
-    int num_separate_points = 1;
+    int num_layers = 1;
     int graph_size = 0;
     bool floyd_warshall_flag = false;
 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
             case 's':
 
                 if (optarg != nullptr) {
-                    num_separate_points = stoi(optarg);
+                    num_layers = stoi(optarg);
                 } else {
                     cout << "Assign the number of separate points!" << endl;
                     return 42;
@@ -84,35 +84,35 @@ int main(int argc, char *argv[]) {
 
     if (floyd_warshall_flag) {
         if (omp_flag) {
-            solver = new FloydWarshallPar(num_thread);
+            solver = new FloydWarshallPar(num_thread, graph_size, num_layers);
         } else {
-            solver = new FloydWarshallSeq();
+            solver = new FloydWarshallSeq(graph_size, num_layers);
         }
     } else {
         if (omp_flag) {
-            solver = new FloydWarshallPar(num_thread);
+            solver = new FloydWarshallPar(num_thread, graph_size, num_layers);
         } else {
-            solver = new FloydWarshallSeq();
+            solver = new FloydWarshallSeq(graph_size, num_layers);
         }
     }
 
     auto tic = chrono::high_resolution_clock::now();
 
-    output = solver->forward(graph_matrix, graph_size);
+    output = solver->forward(graph_matrix);
 
     auto toc = chrono::high_resolution_clock::now();
 
     chrono::duration<double, milli> exec_time = toc - tic;
     cout << "Program execution time: " << exec_time.count() << "ms" << endl;
 
-    testCorrectness(output, graph_matrix);
+    testCorrectness(output, graph_matrix, graph_size, num_layers);
 }
 
-void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix) {
-    Solver* solver = new FloydWarshallSeq();
+void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix, int graph_size, int num_layers) {
+    Solver* solver = new FloydWarshallSeq(graph_size, num_layers);
     int n = graph_matrix->size();
 
-    auto fit = solver->forward(graph_matrix, n);
+    auto fit = solver->forward(graph_matrix);
 
     for (int i = 0; i < n; i += 1) {
         for (int j = 0; j < n; j += 1) {

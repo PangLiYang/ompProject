@@ -8,7 +8,7 @@ using namespace std;
 
 class Solver {
 public:
-    virtual vector< vector<int> >* forward(vector< vector<int> >* graph, int graph_size) = 0;
+    virtual vector< vector<int> >* forward(vector< vector<int> >* graph) = 0;
 
 };
 

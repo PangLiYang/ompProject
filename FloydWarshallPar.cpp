@@ -1,11 +1,12 @@
 #include "FloydWarshallPar.h"
 
-FloydWarshallPar::FloydWarshallPar(int num_thread) {
+FloydWarshallPar::FloydWarshallPar(int num_thread, int graph_size, int num_layers) {
     this->num_thread = num_thread;
-
+    this->graph_size = graph_size;
+    this->num_layers = num_layers;
 }
 
-vector< vector<int> >* FloydWarshallPar::forward(vector< vector<int> >* graph, int graph_size) {
+vector< vector<int> >* FloydWarshallPar::forward(vector< vector<int> >* graph) {
 
 //    omp_set_num_threads(num_thread);
 
