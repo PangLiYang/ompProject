@@ -70,8 +70,6 @@ void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph
         }
     }
 
-    delete(solver);
-
     cout << "Correct!" << endl;
 }
 

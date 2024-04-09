@@ -13,6 +13,10 @@ public:
 private:
     int graph_size;
     int num_layers;
+    int parallel_factor;
+
+    void partial_forward(vector< vector<int> >* graph, int x0, int y0,
+                         int x1, int y1, int x2, int y2);
 };
 
 

@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
     bool omp_flag = false;
     bool test_flag = false;
     bool print_flag = false;
+    bool optimized_flag = false;
     int num_thread = 1;
     int num_layers = 0;
     int graph_size = 0;
@@ -31,23 +32,24 @@ int main(int argc, char *argv[]) {
 
     int c;
 
-    while ((c = getopt(argc, argv, "ftpm:l:g:")) != -1) {
+    while ((c = getopt(argc, argv, "ftpom:l:g:")) != -1) {
 
         switch (c) {
 
             case 'f':
                 floyd_warshall_flag = true;
-
                 break;
 
             case 't':
                 test_flag = true;
-
                 break;
 
             case 'p':
                 print_flag = true;
+                break;
 
+            case 'o':
+                optimized_flag = true;
                 break;
 
             case 'm':
@@ -60,7 +62,6 @@ int main(int argc, char *argv[]) {
                     cout << "Assign the number of threads!" << endl;
                     return 42;
                 }
-
                 break;
 
             case 'l':
@@ -71,7 +72,6 @@ int main(int argc, char *argv[]) {
                     cout << "Assign the number of separate points!" << endl;
                     return 42;
                 }
-
                 break;
 
             case 'g':
@@ -82,7 +82,6 @@ int main(int argc, char *argv[]) {
                     cout << "Assign the graph size!" << endl;
                     return 42;
                 }
-
                 break;
 
             default:
@@ -98,13 +97,13 @@ int main(int argc, char *argv[]) {
 
     if (floyd_warshall_flag) {
         if (omp_flag) {
-            solver = new FloydWarshallPar(num_thread, graph_size, num_layers);
+            solver = new FloydWarshallPar(num_thread, graph_size);
         } else {
             solver = new FloydWarshallSeq(graph_size, num_layers);
         }
     } else {
         if (omp_flag) {
-            solver = new FloydWarshallPar(num_thread, graph_size, num_layers);
+            solver = new FloydWarshallPar(num_thread, graph_size);
         } else {
             solver = new FloydWarshallSeq(graph_size, num_layers);
         }
@@ -112,7 +111,11 @@ int main(int argc, char *argv[]) {
 
     auto tic = chrono::high_resolution_clock::now();
 
-    output = solver->forward(graph_matrix);
+    if (optimized_flag) {
+        output = solver->forward_optimized(graph_matrix);
+    } else {
+        output = solver->forward(graph_matrix);
+    }
 
     auto toc = chrono::high_resolution_clock::now();
 

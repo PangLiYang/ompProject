@@ -5,7 +5,7 @@
 
 class FloydWarshallPar : public Solver {
 public:
-    FloydWarshallPar(int num_thread, int graph_size, int num_layers);
+    FloydWarshallPar(int num_thread, int graph_size);
 
     vector< vector<int> >* forward(vector< vector<int> >* graph);
     vector< vector<int> >* forward_optimized(vector< vector<int> >* graph);
@@ -13,7 +13,7 @@ public:
 private:
     int num_thread;
     int graph_size;
-    int num_layers;
+    int parallel_factor;
 };
 
 
