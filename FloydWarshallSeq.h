@@ -3,7 +3,7 @@
 
 #include "Solver.h"
 
-class FloydWarshallSeq : public Solver{
+class FloydWarshallSeq : public Solver {
 public:
     FloydWarshallSeq(int graph_size);
 

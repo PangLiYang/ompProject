@@ -81,6 +81,9 @@ vector< vector<int> >*  FloydWarshallPar::forward_optimized(vector< vector<int> 
 
             partial_forward(local_graph, k, k, k, k, k, k);
 
+            // Using static schedule with small chunk size to balance threads workload
+            // due to the duplicated term (i == k && j == k)
+
             #pragma omp for schedule(static,1)
             for (int i = 0; i < block_size; i += 1) {
                 if (i == k) {
@@ -99,17 +102,6 @@ vector< vector<int> >*  FloydWarshallPar::forward_optimized(vector< vector<int> 
                     partial_forward(local_graph, i, j, i, k, k, j);
                 }
             }
-//            for (int i = 0; i < block_size; i += 1) {
-//                if (i == k) {
-//                    continue;
-//                }
-//                for (int j = 0; j < block_size; j += 1) {
-//                    if (j == k) {
-//                        continue;
-//                    }
-//                    partial_forward(local_graph, i, j, i, k, k, j);
-//                }
-//            }
         }
 
         // Map the targeted output
