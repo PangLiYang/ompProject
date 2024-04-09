@@ -81,7 +81,7 @@ vector< vector<int> >*  FloydWarshallPar::forward_optimized(vector< vector<int> 
 
             partial_forward(local_graph, k, k, k, k, k, k);
 
-            #pragma omp for
+            #pragma omp for schedule(static,1)
             for (int i = 0; i < block_size; i += 1) {
                 if (i == k) {
                     continue;
