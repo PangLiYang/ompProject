@@ -90,18 +90,26 @@ vector< vector<int> >*  FloydWarshallPar::forward_optimized(vector< vector<int> 
                 partial_forward(local_graph, k, i, k, k, k, i);
             }
 
-            #pragma omp for
+            #pragma omp for collapse(2)
             for (int i = 0; i < block_size; i += 1) {
-                if (i == k) {
-                    continue;
-                }
                 for (int j = 0; j < block_size; j += 1) {
-                    if (j == k) {
+                    if (i == k || j == k) {
                         continue;
                     }
                     partial_forward(local_graph, i, j, i, k, k, j);
                 }
             }
+//            for (int i = 0; i < block_size; i += 1) {
+//                if (i == k) {
+//                    continue;
+//                }
+//                for (int j = 0; j < block_size; j += 1) {
+//                    if (j == k) {
+//                        continue;
+//                    }
+//                    partial_forward(local_graph, i, j, i, k, k, j);
+//                }
+//            }
         }
 
         // Map the targeted output
