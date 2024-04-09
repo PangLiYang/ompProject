@@ -55,8 +55,8 @@ vector<vector<int> >* add_graph_layers(vector<vector<int> > *graph, int num_laye
 }
 
 void testCorrectness(vector< vector<int> >* output, vector< vector<int> >* graph_matrix,
-                     int graph_size, int num_layers) {
-    Solver* solver = new FloydWarshallSeq(graph_size, num_layers);
+                     int graph_size) {
+    Solver* solver = new FloydWarshallSeq(graph_size);
 
     auto fit = solver->forward(graph_matrix);
     int n = fit->size();

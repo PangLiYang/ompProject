@@ -5,14 +5,13 @@
 
 class FloydWarshallSeq : public Solver{
 public:
-    FloydWarshallSeq(int graph_size, int num_layers);
+    FloydWarshallSeq(int graph_size);
 
     vector< vector<int> >* forward(vector< vector<int> >* graph);
     vector< vector<int> >* forward_optimized(vector< vector<int> >* graph);
 
 private:
     int graph_size;
-    int num_layers;
     int parallel_factor;
 
     void partial_forward(vector< vector<int> >* graph, int x0, int y0,

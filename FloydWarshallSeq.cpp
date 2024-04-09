@@ -1,8 +1,7 @@
 #include "FloydWarshallSeq.h"
 
-FloydWarshallSeq::FloydWarshallSeq(int graph_size, int num_layers) {
+FloydWarshallSeq::FloydWarshallSeq(int graph_size) {
     this->graph_size = graph_size;
-    this->num_layers = num_layers;
     this->parallel_factor = 32;
 }
 

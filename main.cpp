@@ -99,13 +99,13 @@ int main(int argc, char *argv[]) {
         if (omp_flag) {
             solver = new FloydWarshallPar(num_thread, graph_size);
         } else {
-            solver = new FloydWarshallSeq(graph_size, num_layers);
+            solver = new FloydWarshallSeq(graph_size);
         }
     } else {
         if (omp_flag) {
             solver = new FloydWarshallPar(num_thread, graph_size);
         } else {
-            solver = new FloydWarshallSeq(graph_size, num_layers);
+            solver = new FloydWarshallSeq(graph_size);
         }
     }
 
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
     cout << "Program execution time: " << exec_time.count() << "ms" << endl;
 
     if (test_flag) {
-        testCorrectness(output, graph_matrix, graph_size, num_layers);
+        testCorrectness(output, graph_matrix, graph_size);
     }
 
     if (print_flag) {
