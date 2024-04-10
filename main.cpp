@@ -9,6 +9,7 @@
 #include "Solver.h"
 #include "FloydWarshallSeq.h"
 #include "FloydWarshallPar.h"
+#include "JohnsonSeq.h"
 
 using namespace std;
 
@@ -105,7 +106,7 @@ int main(int argc, char *argv[]) {
         if (omp_flag) {
             solver = new FloydWarshallPar(num_thread, graph_size);
         } else {
-            solver = new FloydWarshallSeq(graph_size);
+            solver = new JohnsonSeq(graph_size);
         }
     }
 
