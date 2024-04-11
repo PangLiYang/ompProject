@@ -24,7 +24,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
         }
     }
 
-    #pragma omp parallel for
+    #pragma omp parallel for private(curr, pq)
     for (int u = 0; u < V; u += 1) {
 
         vector<int> curr(V, INT_MAX / 2);
@@ -58,7 +58,6 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
             output->at(i).at(j) = temp->at(i).at(V - graph_size + j);
         }
     }
-
 
     return output;
 }
