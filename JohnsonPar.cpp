@@ -66,11 +66,9 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
                 output->at(i).at(j) = temp->at(i).at(V - graph_size + j);
             }
         }
-
-        return output;
     }
 
-
+    return output;
 }
 
 vector<vector<int> > *JohnsonPar::forward_optimized(vector<vector<int> > *graph) {
