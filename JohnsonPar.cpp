@@ -37,13 +37,16 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
                 int root = pq->top().second;
                 pq->pop();
 
-                for (auto &node: adj_graph->adjList.at(root)) {
-                    int next = node.first;
-                    int weight = node.second;
+                auto it = adj_graph->adjList.find(root);
+                if (it != adj_graph->adjList.end()) {
+                    for (auto &node: adj_graph->adjList[root]) {
+                        int next = node.first;
+                        int weight = node.second;
 
-                    if (curr->at(next) > curr->at(root) + weight) {
-                        curr->at(next) = curr->at(root) + weight;
-                        pq->push(make_pair(curr->at(next), next));
+                        if (curr->at(next) > curr->at(root) + weight) {
+                            curr->at(next) = curr->at(root) + weight;
+                            pq->push(make_pair(curr->at(next), next));
+                        }
                     }
                 }
             }
