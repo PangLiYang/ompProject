@@ -17,6 +17,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
     #pragma omp parallel
     {
+        // Problem here
         #pragma omp for
         for (int u = 0; u < V; u += 1) {
 
@@ -36,7 +37,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
                 int root = pq->top().second;
                 pq->pop();
 
-                for (auto &node: adj_graph->adjList[root]) {
+                for (auto &node: adj_graph->adjList.at(root)) {
                     int next = node.first;
                     int weight = node.second;
 
@@ -47,9 +48,9 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
                 }
             }
 
-//            for (int v = 0; v < V; v += 1) {
-//                temp->at(u).at(v) = curr->at(v);
-//            }
+            for (int v = 0; v < V; v += 1) {
+                temp->at(u).at(v) = curr->at(v);
+            }
         }
 
         #pragma omp for collapse(2)
