@@ -15,7 +15,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto *temp = new vector<vector<int> >(V, vector<int>(V));
     auto *output = new vector<vector<int> >(graph_size, vector<int>(graph_size));
 
-    #pragma omp for collapse(2)
+    #pragma omp for
     for (int i = 0; i < V; i += 1) {
 
         cout << "In graph, we are using thread: " << omp_get_thread_num() << endl;
