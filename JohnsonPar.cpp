@@ -7,6 +7,8 @@ JohnsonPar::JohnsonPar(int num_thread, int graph_size) {
 
 vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
+    omp_set_num_threads(num_thread);
+
     int V = graph->size();
 
     auto* adj_graph = new graph_t;
