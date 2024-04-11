@@ -14,8 +14,6 @@ public:
 private:
     int graph_size;
     int num_thread;
-
-    graph_t* init_adjacency_list(vector< vector<int> >* graph);
 };
 
 

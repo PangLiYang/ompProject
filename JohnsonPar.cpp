@@ -5,7 +5,7 @@ JohnsonPar::JohnsonPar(int num_thread, int graph_size) {
     this->graph_size = graph_size;
 }
 
-vector<vector<int> > *JohnsonPar::forward(vector<vector<int>> *graph) {
+vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
     int V = graph->size();
 
@@ -66,4 +66,8 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int>> *graph) {
     }
 
     return output;
+}
+
+vector<vector<int> > *JohnsonPar::forward_optimized(vector<vector<int> > *graph) {
+    return nullptr;
 }
