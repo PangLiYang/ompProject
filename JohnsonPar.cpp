@@ -7,8 +7,6 @@ JohnsonPar::JohnsonPar(int num_thread, int graph_size) {
 
 vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
-    omp_set_num_threads(num_thread);
-
     int V = graph->size();
 
     auto* adj_graph = new graph_t;
@@ -17,7 +15,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto *temp = new vector<vector<int> >(V, vector<int>(V));
     auto *output = new vector<vector<int> >(graph_size, vector<int>(graph_size));
 
-    #pragma omp for
+    #pragma omp parallel for
     for (int i = 0; i < V; i += 1) {
 
         cout << "In graph, we are using thread: " << omp_get_thread_num() << endl;
@@ -32,7 +30,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     #pragma omp for
     for (int u = 0; u < V; u += 1) {
 
-        cout << "In dijkstra, we are using thread: " << omp_get_thread_num() << endl;
+//        cout << "In dijkstra, we are using thread: " << omp_get_thread_num() << endl;
 
         vector<int> curr(V, INT_MAX / 2);
         priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
