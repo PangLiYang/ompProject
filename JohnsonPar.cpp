@@ -7,21 +7,11 @@ JohnsonPar::JohnsonPar(int num_thread, int graph_size) {
 
 vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
-    int V = graph->size();
+    auto* adj_graph = init_adjacency_list(graph);
+    int V = adj_graph->V;
 
-    auto* adj_graph = new graph_t;
-    adj_graph->V = V;
-
-    auto *temp = new vector<vector<int> >(V, vector<int>(V));
-    auto *output = new vector<vector<int> >(graph_size, vector<int>(graph_size));
-
-    for (int i = 0; i < V; i += 1) {
-        for (int j = 0; j < V; j += 1) {
-            if (i != j && graph->at(i).at(j) != INT_MAX / 2) {
-                adj_graph->adjList[i].push_back(make_pair(j, graph->at(i).at(j)));
-            }
-        }
-    }
+    auto* temp = new vector< vector<int> >(V, vector<int>(V));
+    auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
     #pragma omp parallel
     {
@@ -73,4 +63,22 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
 vector<vector<int> > *JohnsonPar::forward_optimized(vector<vector<int> > *graph) {
     return nullptr;
+}
+
+graph_t* JohnsonPar::init_adjacency_list(vector<vector<int> > *graph) {
+
+    int n = graph->size();
+
+    auto* adj_graph = new graph_t;
+    adj_graph->V = n;
+
+    for (int i = 0; i < n; i += 1) {
+        for (int j = 0; j < n; j += 1) {
+            if (i != j && graph->at(i).at(j) != INT_MAX / 2) {
+                adj_graph->adjList[i].push_back(make_pair(j, graph->at(i).at(j) ));
+            }
+        }
+    }
+
+    return adj_graph;
 }
