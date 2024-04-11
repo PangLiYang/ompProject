@@ -25,7 +25,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
         }
     }
 
-//    #pragma omp parallel for
+    #pragma omp parallel for
     for (int u = 0; u < V; u += 1) {
 
         vector<int>* curr;
@@ -60,7 +60,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
         }
     }
 
-//    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2)
     for (int i = 0; i < graph_size; i += 1) {
         for (int j = 0; j < graph_size; j += 1) {
             output->at(i).at(j) = temp->at(i).at(V - graph_size + j);
