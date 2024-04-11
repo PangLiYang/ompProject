@@ -13,7 +13,7 @@ vector< vector<int> >* FloydWarshallPar::forward(vector< vector<int> >* graph) {
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
     auto* local_graph = new vector< vector<int> >(n, vector<int>(n));
 
-    #pragma omp parallel shared(local_graph, output)
+    #pragma omp parallel
     {
         #pragma omp for collapse(2)
         for (int i = 0; i < n; i += 1) {
