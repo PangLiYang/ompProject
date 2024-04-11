@@ -5,6 +5,7 @@
 #include <vector>
 #include <climits>
 #include <list>
+#include <unordered_map>
 #include <omp.h>
 using namespace std;
 

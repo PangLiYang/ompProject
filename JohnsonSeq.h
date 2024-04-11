@@ -1,7 +1,6 @@
 #ifndef OMPPROJECT_JOHNSONSEQ_H
 #define OMPPROJECT_JOHNSONSEQ_H
 
-#include <unordered_map>
 #include <queue>
 #include "Solver.h"
 
