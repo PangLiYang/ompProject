@@ -15,7 +15,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto *temp = new vector<vector<int> >(V, vector<int>(V));
     auto *output = new vector<vector<int> >(graph_size, vector<int>(graph_size));
 
-
+    #pragma omp for collapse(2)
     for (int i = 0; i < V; i += 1) {
         for (int j = 0; j < V; j += 1) {
             if (i != j && graph->at(i).at(j) != INT_MAX / 2) {
