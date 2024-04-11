@@ -27,7 +27,9 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     #pragma omp parallel for
     for (int u = 0; u < V; u += 1) {
 
+        #pragma omp critical
         vector<int> curr(V, INT_MAX / 2);
+        #pragma omp critical
         priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
 
         curr.at(u) = 0;
