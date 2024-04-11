@@ -24,7 +24,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
         }
     }
 
-    #pragma omp parallel for
+//    #pragma omp parallel for
     for (int u = 0; u < V; u += 1) {
 
         vector<int>* curr;
