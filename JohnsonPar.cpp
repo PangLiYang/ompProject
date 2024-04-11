@@ -27,7 +27,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
             }
         }
 
-        #pragma omp for
+//        #pragma omp for
         for (int u = 0; u < V; u += 1) {
 
             vector<int> curr(V, INT_MAX / 2);
