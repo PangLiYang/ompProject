@@ -2,14 +2,8 @@
 #define OMPPROJECT_JOHNSONSEQ_H
 
 #include <unordered_map>
-#include <list>
 #include <queue>
 #include "Solver.h"
-
-typedef struct graph {
-    int V;
-    unordered_map<int, list<pair<int, int> > > adjList;
-} graph_t;
 
 class JohnsonSeq : public Solver {
 public:

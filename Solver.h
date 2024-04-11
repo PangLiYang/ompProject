@@ -4,8 +4,14 @@
 #include <iostream>
 #include <vector>
 #include <climits>
+#include <list>
 #include <omp.h>
 using namespace std;
+
+typedef struct graph {
+    int V;
+    unordered_map<int, list<pair<int, int> > > adjList;
+} graph_t;
 
 class Solver {
 public:
