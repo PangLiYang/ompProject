@@ -15,18 +15,16 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto *temp = new vector<vector<int> >(V, vector<int>(V));
     auto *output = new vector<vector<int> >(graph_size, vector<int>(graph_size));
 
-    #pragma omp parallel
-    {
-//        #pragma omp for
-        for (int i = 0; i < V; i += 1) {
-            for (int j = 0; j < V; j += 1) {
-                if (i != j && graph->at(i).at(j) != INT_MAX / 2) {
-//                    #pragma omp critical
-                    adj_graph->adjList[i].push_back(make_pair(j, graph->at(i).at(j)));
-                }
+    for (int i = 0; i < V; i += 1) {
+        for (int j = 0; j < V; j += 1) {
+            if (i != j && graph->at(i).at(j) != INT_MAX / 2) {
+                adj_graph->adjList[i].push_back(make_pair(j, graph->at(i).at(j)));
             }
         }
+    }
 
+    #pragma omp parallel
+    {
         #pragma omp for
         for (int u = 0; u < V; u += 1) {
 
