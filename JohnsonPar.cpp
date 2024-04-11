@@ -13,29 +13,32 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto* temp = new vector< vector<int> >(V, vector<int>(V));
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
-    // Problem : ./prog -g60 -l7 -m64
-
     #pragma omp parallel
     {
-        // Problem here
         #pragma omp for
         for (int u = 0; u < V; u += 1) {
 
-            vector<int> *curr;
-            priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > *pq;
+//            vector<int> *curr;
+//            priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > *pq;
+//
+//            #pragma omp critical
+//            {
+//                curr = new vector<int>(V, INT_MAX / 2);
+//                pq = new priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >();
+//            }
+//
+//            curr->at(u) = 0;
+//            pq->push(make_pair(0, u));
 
-            #pragma omp critical
-            {
-                curr = new vector<int>(V, INT_MAX / 2);
-                pq = new priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >();
-            }
+            vector<int> curr(V, INT_MAX / 2);
+            priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
 
-            curr->at(u) = 0;
-            pq->push(make_pair(0, u));
+            curr.at(u) = 0;
+            pq.push(make_pair(0, u));
 
-            while (!pq->empty()) {
-                int root = pq->top().second;
-                pq->pop();
+            while (!pq.empty()) {
+                int root = pq.top().second;
+                pq.pop();
 
                 auto it = adj_graph->adjList.find(root);
                 if (it != adj_graph->adjList.end()) {
@@ -43,16 +46,16 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
                         int next = node.first;
                         int weight = node.second;
 
-                        if (curr->at(next) > curr->at(root) + weight) {
-                            curr->at(next) = curr->at(root) + weight;
-                            pq->push(make_pair(curr->at(next), next));
+                        if (curr.at(next) > curr.at(root) + weight) {
+                            curr.at(next) = curr.at(root) + weight;
+                            pq.push(make_pair(curr.at(next), next));
                         }
                     }
                 }
             }
 
             for (int v = 0; v < V; v += 1) {
-                temp->at(u).at(v) = curr->at(v);
+                temp->at(u).at(v) = curr.at(v);
             }
         }
 
