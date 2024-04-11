@@ -27,31 +27,35 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     #pragma omp parallel for
     for (int u = 0; u < V; u += 1) {
 
-        #pragma omp critical
-        vector<int> curr(V, INT_MAX / 2);
-        #pragma omp critical
-        priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
+        vector<int>* curr;
+        priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >* pq;
 
-        curr.at(u) = 0;
-        pq.push(make_pair(0, u));
+        #pragma omp critical
+        {
+            curr = new vector<int>(V, INT_MAX / 2);
+            pq = new priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >();
+        }
 
-        while (!pq.empty()) {
-            int root = pq.top().second;
-            pq.pop();
+        curr->at(u) = 0;
+        pq->push(make_pair(0, u));
+
+        while (!pq->empty()) {
+            int root = pq->top().second;
+            pq->pop();
 
             for (auto &node: adj_graph->adjList[root]) {
                 int next = node.first;
                 int weight = node.second;
 
-                if (curr.at(next) > curr.at(root) + weight) {
-                    curr.at(next) = curr.at(root) + weight;
-                    pq.push(make_pair(curr.at(next), next));
+                if (curr->at(next) > curr->at(root) + weight) {
+                    curr->at(next) = curr->at(root) + weight;
+                    pq->push(make_pair(curr->at(next), next));
                 }
             }
         }
 
         for (int v = 0; v < V; v += 1) {
-            temp->at(u).at(v) = curr.at(v);
+            temp->at(u).at(v) = curr->at(v);
         }
     }
 
