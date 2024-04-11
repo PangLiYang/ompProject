@@ -17,6 +17,9 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
     #pragma omp for collapse(2)
     for (int i = 0; i < V; i += 1) {
+
+        cout << "In graph, we are using thread: " << omp_get_thread_num() << endl;
+
         for (int j = 0; j < V; j += 1) {
             if (i != j && graph->at(i).at(j) != INT_MAX / 2) {
                 adj_graph->adjList[i].push_back(make_pair(j, graph->at(i).at(j)));
@@ -26,6 +29,8 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
     #pragma omp for
     for (int u = 0; u < V; u += 1) {
+
+        cout << "In dijkstra, we are using thread: " << omp_get_thread_num() << endl;
 
         vector<int> curr(V, INT_MAX / 2);
         priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
