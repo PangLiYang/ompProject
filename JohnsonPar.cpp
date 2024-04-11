@@ -59,16 +59,18 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
                 temp->at(u).at(v) = curr->at(v);
             }
         }
-    }
 
-    #pragma omp for collapse(2)
-    for (int i = 0; i < graph_size; i += 1) {
-        for (int j = 0; j < graph_size; j += 1) {
-            output->at(i).at(j) = temp->at(i).at(V - graph_size + j);
+        #pragma omp for collapse(2)
+        for (int i = 0; i < graph_size; i += 1) {
+            for (int j = 0; j < graph_size; j += 1) {
+                output->at(i).at(j) = temp->at(i).at(V - graph_size + j);
+            }
         }
+
+        return output;
     }
 
-    return output;
+
 }
 
 vector<vector<int> > *JohnsonPar::forward_optimized(vector<vector<int> > *graph) {
