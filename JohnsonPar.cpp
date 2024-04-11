@@ -13,6 +13,8 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto* temp = new vector< vector<int> >(V, vector<int>(V));
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
+    // Problem : ./prog -g60 -l7 -m64
+
     #pragma omp parallel
     {
         #pragma omp for
@@ -45,9 +47,9 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
                 }
             }
 
-            for (int v = 0; v < V; v += 1) {
-                temp->at(u).at(v) = curr->at(v);
-            }
+//            for (int v = 0; v < V; v += 1) {
+//                temp->at(u).at(v) = curr->at(v);
+//            }
         }
 
         #pragma omp for collapse(2)
