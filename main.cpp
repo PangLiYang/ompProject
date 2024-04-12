@@ -3,8 +3,6 @@
 #include <unistd.h>
 #include <omp.h>
 
-#include <vector>
-
 #include "GeneralUtils.h"
 #include "Solver.h"
 #include "FloydWarshallSeq.h"

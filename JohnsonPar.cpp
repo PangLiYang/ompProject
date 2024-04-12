@@ -13,6 +13,8 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto* temp = new vector< vector<int> >(V, vector<int>(V));
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
+    // Caution! ./prog -g60 -l7 -m64
+
     #pragma omp parallel
     {
         #pragma omp for
@@ -71,7 +73,46 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 }
 
 vector<vector<int> > *JohnsonPar::forward_optimized(vector<vector<int> > *graph) {
-    return nullptr;
+    auto* adj_graph = init_adjacency_list(graph);
+    int V = adj_graph->V;
+
+    auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
+
+
+    #pragma omp parallel for
+    for (int u = 0; u < graph_size; u += 1) {
+
+        vector<int> curr(V, INT_MAX / 2);
+        priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
+
+        curr.at(u) = 0;
+        pq.push(make_pair(0, u));
+
+        while (!pq.empty()) {
+            int root = pq.top().second;
+            pq.pop();
+
+            auto it = adj_graph->adjList.find(root);
+            if (it != adj_graph->adjList.end()) {
+                for (auto &node: adj_graph->adjList[root]) {
+                    int next = node.first;
+                    int weight = node.second;
+
+                    if (curr.at(next) > curr.at(root) + weight) {
+                        curr.at(next) = curr.at(root) + weight;
+                        pq.push(make_pair(curr.at(next), next));
+                    }
+                }
+            }
+        }
+
+        for (int v = 0; v < graph_size; v += 1) {
+            output->at(u).at(v) = curr.at(V - graph_size + v);
+        }
+    }
+
+
+    return output;
 }
 
 graph_t* JohnsonPar::init_adjacency_list(vector<vector<int> > *graph) {
