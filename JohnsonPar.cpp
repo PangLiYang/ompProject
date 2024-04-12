@@ -17,7 +17,7 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
 
     #pragma omp parallel
     {
-        #pragma omp for
+        #pragma omp for schedule(dynamic)
         for (int u = 0; u < V; u += 1) {
 
 //            vector<int> *curr;
