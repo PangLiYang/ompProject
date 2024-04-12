@@ -79,7 +79,7 @@ vector<vector<int> > *JohnsonPar::forward_optimized(vector<vector<int> > *graph)
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
 
-    #pragma omp parallel for
+    #pragma omp parallel for schedule(dynamic)
     for (int u = 0; u < graph_size; u += 1) {
 
         vector<int> curr(V, INT_MAX / 2);
