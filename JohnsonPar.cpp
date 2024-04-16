@@ -19,19 +19,6 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     {
         #pragma omp for schedule(dynamic)
         for (int u = 0; u < V; u += 1) {
-
-//            vector<int> *curr;
-//            priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > *pq;
-//
-//            #pragma omp critical
-//            {
-//                curr = new vector<int>(V, INT_MAX / 2);
-//                pq = new priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >();
-//            }
-//
-//            curr->at(u) = 0;
-//            pq->push(make_pair(0, u));
-
             vector<int> curr(V, INT_MAX / 2);
             priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
 

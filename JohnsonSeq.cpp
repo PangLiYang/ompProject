@@ -9,6 +9,12 @@ vector<vector<int> >* JohnsonSeq::forward(vector<vector<int> > *graph) {
     auto* adj_graph = init_adjacency_list(graph);
     int V = adj_graph->V;
 
+    for (int i = 0; i < V; i += 1) {
+        adj_graph->adjList[V].push_back(make_pair(i, 0));
+    }
+
+    auto* h = bellman_ford(V + 1, adj_graph, V);
+
     auto* temp = new vector< vector<int> >(V, vector<int>(V));
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
@@ -26,7 +32,7 @@ vector<vector<int> >* JohnsonSeq::forward(vector<vector<int> > *graph) {
 
             for (auto& node : adj_graph->adjList[root]) {
                 int next = node.first;
-                int weight = node.second;
+                int weight = node.second + h->at(root) - h->at(next);
 
                 if (curr.at(next) > curr.at(root) + weight) {
                     curr.at(next) = curr.at(root) + weight;
@@ -36,7 +42,7 @@ vector<vector<int> >* JohnsonSeq::forward(vector<vector<int> > *graph) {
         }
 
         for (int v = 0; v < V; v += 1) {
-            temp->at(u).at(v) = curr.at(v);
+            temp->at(u).at(v) = curr.at(v) + h->at(v) - h->at(u);
         }
     }
 
@@ -54,6 +60,12 @@ vector<vector<int> >* JohnsonSeq::forward_optimized(vector<vector<int> > *graph)
     auto* adj_graph = init_adjacency_list(graph);
     int V = adj_graph->V;
 
+    for (int i = 0; i < V; i += 1) {
+        adj_graph->adjList[V].push_back(make_pair(i, 0));
+    }
+
+    auto* h = bellman_ford(V + 1, adj_graph, V);
+
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
     for (int u = 0; u < graph_size; u += 1) {
@@ -70,7 +82,7 @@ vector<vector<int> >* JohnsonSeq::forward_optimized(vector<vector<int> > *graph)
 
             for (auto& node : adj_graph->adjList[root]) {
                 int next = node.first;
-                int weight = node.second;
+                int weight = node.second + h->at(root) - h->at(next);
 
                 if (curr.at(next) > curr.at(root) + weight) {
                     curr.at(next) = curr.at(root) + weight;
@@ -80,7 +92,7 @@ vector<vector<int> >* JohnsonSeq::forward_optimized(vector<vector<int> > *graph)
         }
 
         for (int v = 0; v < graph_size; v += 1) {
-            output->at(u).at(v) = curr.at(V - graph_size + v);
+            output->at(u).at(v) = curr.at(V - graph_size + v) + h->at(V - graph_size + v) - h->at(u);
         }
     }
 
@@ -103,4 +115,28 @@ graph_t* JohnsonSeq::init_adjacency_list(vector<vector<int> > *graph) {
     }
 
     return adj_graph;
+}
+
+vector<int>* JohnsonSeq::bellman_ford(int n, graph_t* adj_graph, int src) {
+
+    auto* h = new vector<int>(n, INT_MAX / 2);
+
+    h->at(src) = 0;
+
+    for (int k = 1; k < n; k += 1) {
+        for (int i = 0; i < n; i += 1) {
+            auto it = adj_graph->adjList.find(i);
+            if (it != adj_graph->adjList.end()) {
+                for (auto &node: adj_graph->adjList[i]) {
+                    int v = node.first;
+                    int curr_dist = node.second + h->at(i);
+                    if (h->at(i) != INT_MAX / 2 && h->at(v) > curr_dist) {
+                        h->at(v) = curr_dist;
+                    }
+                }
+            }
+        }
+    }
+
+    return h;
 }
