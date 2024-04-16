@@ -16,6 +16,8 @@ private:
     int num_thread;
 
     graph_t* init_adjacency_list(vector< vector<int> >* graph);
+
+    vector<int>* bellman_ford(int n, graph_t* adj_graph, int src);
 };
 
 
