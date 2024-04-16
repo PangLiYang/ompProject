@@ -15,7 +15,7 @@ vector< vector<int> >* FloydWarshallPar::forward(vector< vector<int> >* graph) {
 
     #pragma omp parallel
     {
-        #pragma omp for collapse(2)
+        #pragma omp for
         for (int i = 0; i < n; i += 1) {
             for (int j = 0; j < n; j += 1) {
                 local_graph->at(i).at(j) = graph->at(i).at(j);

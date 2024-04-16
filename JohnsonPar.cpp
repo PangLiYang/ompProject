@@ -19,8 +19,6 @@ vector<vector<int> > *JohnsonPar::forward(vector<vector<int> > *graph) {
     auto* temp = new vector< vector<int> >(V, vector<int>(V));
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
 
-    // Caution! ./prog -g60 -l7 -m64
-
     #pragma omp parallel
     {
         #pragma omp for schedule(dynamic)
@@ -77,7 +75,6 @@ vector<vector<int> > *JohnsonPar::forward_optimized(vector<vector<int> > *graph)
     auto* h = bellman_ford(V + 1, adj_graph, V);
 
     auto* output = new vector< vector<int> >(graph_size, vector<int>(graph_size));
-
 
     #pragma omp parallel for schedule(dynamic)
     for (int u = 0; u < graph_size; u += 1) {
@@ -140,7 +137,7 @@ vector<int>* JohnsonPar::bellman_ford(int n, graph_t* adj_graph, int src) {
     h->at(src) = 0;
 
     for (int k = 1; k < n; k += 1) {
-        #pragma omp parallel for schedule(dynamic)
+        #pragma omp parallel for
         for (int i = 0; i < n; i += 1) {
             auto it = adj_graph->adjList.find(i);
             if (it != adj_graph->adjList.end()) {
