@@ -140,7 +140,7 @@ vector<int>* JohnsonPar::bellman_ford(int n, graph_t* adj_graph, int src) {
     h->at(src) = 0;
 
     for (int k = 1; k < n; k += 1) {
-        #pragma omp parallel for
+        #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < n; i += 1) {
             auto it = adj_graph->adjList.find(i);
             if (it != adj_graph->adjList.end()) {
