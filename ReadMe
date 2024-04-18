@@ -1,0 +1,17 @@
+1. Compile with g++ 9.2 in cims crunchy6
+2. Executable called: prog
+3. Provide the Makefile to compile
+   $cd ./project_code
+   $make
+4. Extra arguments
+    -f : use Floyd-Warshall (otherwise use Johnson as default)
+    -t : test the correctness
+    -p : print the result
+    -o : use optimal implementations
+    -m[i] : use multicore, set omp_set_num_threads to i, default 1
+    -l[i] : use multi layers, set number of layers to i, default 0
+    -g[i] : set the graph size to i, default 0
+
+    For example, $./prog -g50 -l6 -o -t
+    means "run Johnson on graph with 50 vertices modified by 6 layers; use optimized implementation; test its correctness."
+
